@@ -55,6 +55,8 @@ public class Week5 implements IWindowListener {
 			input.getCursorPos(position); // This will get the mouse position in screen space.
 
 			// TODO: Add a new flower at the mouse position. (TASK 3)
+			scene.click(position, width, height);
+			
 		}
 		
 		input.clear(); // Run this to clear input before the next frame.
