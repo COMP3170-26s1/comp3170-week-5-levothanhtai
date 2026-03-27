@@ -26,6 +26,14 @@ public class Flower extends SceneObject {
 	private int[] indices;
 	private int indexBuffer;
 
+	private float baseX = 0.0f;
+	private float baseY = 0.0f;
+	private float elapsedTime = 0.0f;
+	private float swaySpeed = 2.0f;
+	private float swayAmount = 0.2f;
+
+	private FlowerHead head;
+
 	public Flower(int nPetals) {
 		shader = ShaderLibrary.instance.compileShader(VERTEX_SHADER, FRAGMENT_SHADER);		
 	
@@ -60,9 +68,9 @@ public class Flower extends SceneObject {
 		    
 		indexBuffer = GLBuffers.createIndexBuffer(indices);
 		
-		FlowerHead head = new FlowerHead(nPetals, new Vector3f(1.0f, 0.8f, 0.2f));
+		head = new FlowerHead(nPetals, new Vector3f(1.0f, 0.8f, 0.2f));
 		head.setParent(this);
-		head.getMatrix().translate(0.0f, HEIGHT, 0.0f);
+		head.setOffsetY(HEIGHT);
 	}
 	
 	public void drawSelf(Matrix4f mvpMatrix) {
@@ -75,7 +83,24 @@ public class Flower extends SceneObject {
 	    glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0);		
 	}
 	
+	public void setBasePosition(float x, float y) {
+		baseX = x;
+		baseY = y;
+
+		getMatrix().identity();
+		getMatrix().translate(baseX, baseY, 0.0f);
+	}
+	
 	public void update(float dt) {
 		// TODO: make the flower sway. (TASK 5)
+		elapsedTime += dt;
+
+		float angle = (float)Math.sin(elapsedTime * swaySpeed) * swayAmount;
+
+		getMatrix().identity();
+		getMatrix().translate(baseX, baseY, 0.0f);
+		getMatrix().rotateZ(angle);
+
+		head.update(dt);
 	}
 }

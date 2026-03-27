@@ -24,6 +24,9 @@ public class FlowerHead extends SceneObject {
 	
 	private float innerRadius = 0.15f;
 	private float outerRadius = 0.3f;
+	
+	private float offsetY = 0.0f;
+	private float elapsedTime = 0.0f;
 
 	public FlowerHead(int nPetals, Vector3f colour) {
 		
@@ -62,9 +65,18 @@ public class FlowerHead extends SceneObject {
 
 	    vertexBuffer = GLBuffers.createBuffer(vertices);
 	}
+	
+	public void setOffsetY(float y) {
+		offsetY = y;
+	}
 
 	public void update(float dt) {
 		// TODO: Make the flower head rotate. (TASK 5)
+		elapsedTime += dt;
+
+		getMatrix().identity();
+		getMatrix().translate(0.0f, offsetY, 0.0f);
+		getMatrix().rotateZ(elapsedTime);
 	}
 
 	public void drawSelf(Matrix4f mvpMatrix) {

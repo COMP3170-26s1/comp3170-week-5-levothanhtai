@@ -6,10 +6,14 @@ import org.joml.Vector4f;
 import comp3170.InputManager;
 import comp3170.SceneObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import comp3170.week5.sceneobjects.*;
 
 public class Scene extends SceneObject {
 	private Camera camera;
+	private List<Flower> flowers = new ArrayList<>();
 	
 	public Scene() {
 		camera = new Camera();
@@ -24,7 +28,8 @@ public class Scene extends SceneObject {
 	public void createFlower(Vector4f position) {
 		Flower flower = new Flower(10);
 		flower.setParent(this);	
-		flower.getMatrix().translate(position.x,position.y,0.0f);
+		flower.setBasePosition(position.x, position.y);
+		flowers.add(flower);
 	}
 	
 	public void click(Vector2i position, int width, int height) {
@@ -59,6 +64,9 @@ public class Scene extends SceneObject {
 		camera.update(input, dt);
 		
 		// TODO: Update the flowers when animating them. (TASK 5)
+		for (Flower flower : flowers) {
+			flower.update(dt);
+		}
 	}
 	
 }
