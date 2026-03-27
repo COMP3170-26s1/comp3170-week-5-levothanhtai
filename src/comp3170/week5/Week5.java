@@ -41,6 +41,7 @@ public class Week5 implements IWindowListener {
 		
 		new ShaderLibrary(DIRECTORY);
 		scene = new Scene();
+		scene.sceneCam().resize(width, height);
 	}
 	
 	private Vector2i position = new Vector2i();
@@ -72,6 +73,10 @@ public class Week5 implements IWindowListener {
 		
 		// TODO: Use the view and projection matricies to construct the mvpMatrix. (TASK 2)
 		//			Then send it down the scene graph!
+		viewMatrix = scene.sceneCam().GetViewMatrix(viewMatrix);
+	    projectionMatrix = scene.sceneCam().GetProjectionMatrix(projectionMatrix);
+
+	    mvpMatrix = new Matrix4f(projectionMatrix).mul(viewMatrix);
 		scene.draw(mvpMatrix);
 			
 	}
@@ -83,6 +88,8 @@ public class Week5 implements IWindowListener {
 		this.height = height;
 		glViewport(0,0,width,height);
 		// TODO: Recalculate the projection matrix when the window is resized. (TASK 2)
+		
+		scene.sceneCam().resize(width, height);
 	}
 
 	@Override

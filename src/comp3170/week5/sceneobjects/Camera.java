@@ -14,20 +14,26 @@ public class Camera extends SceneObject {
 	private Matrix4f viewMatrix = new Matrix4f();
 	
 	public Camera() {
-		
+		getMatrix().translate(0.0f, 0.0f, 20.0f);
 	}
 	
 	public void resize(int w, int h) {
 		//TODO: Change the projection matrix when the window is resized. (TASK 2)
+	    float aspect = (float) w / (float) h;
+
+	    projectionMatrix.identity().ortho(
+	        -zoom * aspect, zoom * aspect,
+	        -zoom, zoom,
+	        -100.0f, 100.0f
+	    );
 	}
 	
 	public Matrix4f GetViewMatrix(Matrix4f dest) {
-		viewMatrix = getMatrix();
 		return viewMatrix.invert(dest);
 	}
 	
 	public Matrix4f GetProjectionMatrix(Matrix4f dest) {
-		return projectionMatrix.invert(dest);
+		return projectionMatrix.get(dest);
 	}
 	
 // TODO: Make the camera zoom in-and-out based on user input. (TASK 4)
